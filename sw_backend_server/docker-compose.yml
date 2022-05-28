@@ -1,0 +1,21 @@
+version: "3.8"
+networks:
+  inter:
+
+services:
+  redis-service:
+    build: ./redis-server
+    volumes:   
+      - ./redis-data:/redis-data
+    ports:
+      - "6379:6379"
+    networks:
+      - inter
+  python-service:
+    build: ./python-server
+    depends_on:
+     - redis-service
+    networks:
+      - inter
+    environment:
+      REDIS_IP: "redis-service"
